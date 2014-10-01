@@ -10,7 +10,11 @@
     "peer": "surenm/peerjs-server",
     "passport": "0.2.1",
     "passport-facebook": "x",
-    "nodemon": "1.2.1"
+    "nodemon": "1.2.1",
+    "morgan": "x",
+    "cookie-parser": "x",
+    "body-parser": "x",
+    "express-session": "x"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
