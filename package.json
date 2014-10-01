@@ -1,7 +1,19 @@
 {
-  "name": "peer-client",
+  "name": "chat-server",
+  "description": "Server for webrtc based quick chat ",
   "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "coffee-script": "1.8.0",
+    "swig": "x",
+    "peer": "surenm/peerjs-server",
+    "passport": "0.2.1",
+    "passport-facebook": "x",
+    "nodemon": "1.2.1"
+  },
   "devDependencies": {
-    "grunt": "~0.4.5"
+    "grunt": "~0.4.5",
+    "foreman": "x"
   }
 }
