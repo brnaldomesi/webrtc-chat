@@ -1,1 +1,1 @@
-web: nodemon app.coffee
+web: nodemon --debug server.coffee
