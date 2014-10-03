@@ -39,7 +39,7 @@ class Chat
 
   setupRoutes: () ->
     # Authentication based views
-    @app.get '/auth/facebook', auth.passport.authenticate('facebook')
+    @app.get '/auth/facebook', auth.passport.authenticate('facebook', {scope: ['email']})
     @app.get '/auth/facebook/callback', auth.passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/failure' })
     # The default route
     @app.get '/', (request, response) ->
