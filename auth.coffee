@@ -1,14 +1,16 @@
+models = require('./models')
 passport = require('passport')
 FacebookStrategy = require('passport-facebook').Strategy
 
 class Auth
   constructor: () ->
+    @current_user = null
     @passport = passport
     @passport.serializeUser (user, done) ->
-      done(null, user.id)
+      done(null, user)
 
-    @passport.deserializeUser (id, done) ->
-      done(null, id)
+    @passport.deserializeUser (user_data, done) ->
+      done(null, user_data)
 
     facebook_strategy = new FacebookStrategy({
       clientID: process.env.FACEBOOK_CLIENT_ID
@@ -20,7 +22,10 @@ class Auth
     @passport.use(facebook_strategy)
 
   @OnSuccessfulOauthCallback: (accessToken, refreshToken, profile, done) ->
-    done(null, profile)
+    models.User.findOrCreate({accessToken: accessToken, refreshToken: refreshToken, profile: profile}, (user) ->
+      done(null, user)
+    )
+
 
 
 module.exports = new Auth()
