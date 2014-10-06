@@ -17,7 +17,8 @@
     "express-session": "1.8.2",
     "bookshelf": "tgriesser/bookshelf",
     "knex": "tgriesser/knex",
-    "peer": "surenm/peerjs-server"
+    "peer": "surenm/peerjs-server",
+    "async": "0.9.0"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
