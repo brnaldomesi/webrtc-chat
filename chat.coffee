@@ -5,7 +5,7 @@ cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 session = require('express-session')
 PeerServer = require('peer').PeerServer
-
+models = require('./models')
 auth = require('./auth')
 
 class Chat
@@ -37,6 +37,11 @@ class Chat
     @app.use(auth.passport.initialize())
     @app.use(auth.passport.session())
 
+    $app = @app
+    @app.use (req, res, next) ->
+      $app.locals.user = req.user
+      next()
+
   setupRoutes: () ->
     # Authentication based views
     @app.get '/auth/facebook', auth.passport.authenticate('facebook', {scope: ['email']})
@@ -46,7 +51,7 @@ class Chat
       response.render('index')
 
     @app.get '/success', (request, response) ->
-      response.send("Success.")
+      response.render("success")
 
     @app.get '/failure', (request, response) ->
       response.send('Failure.')
