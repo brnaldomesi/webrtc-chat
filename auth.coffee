@@ -22,7 +22,7 @@ class Auth
     @passport.use(facebook_strategy)
 
   @OnSuccessfulOauthCallback: (accessToken, refreshToken, profile, done) ->
-    models.User.findOrCreate({accessToken: accessToken, refreshToken: refreshToken, profile: profile}, (user) ->
+    models.User.findOrCreate(profile, (user) ->
       done(null, user)
     )
 
