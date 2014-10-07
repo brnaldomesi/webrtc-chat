@@ -59,6 +59,9 @@ class Chat
     @app.get '/failure', (request, response) ->
       response.send('Failure.')
 
+    @app.post '/me', (request, response) ->
+      response.send 'Do nothing'
+
   startServer: () ->
     $this = @
     @server = @app.listen 3000, () ->
