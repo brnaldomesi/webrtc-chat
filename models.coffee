@@ -22,18 +22,15 @@ class User extends bookshelf.Model
       email: @get('email')
     }
 
-  @findOrCreate: (data, callback) ->
-    user_data = 
-      id: data.profile._json.id
-      name: data.profile._json.name
-      email: data.profile._json.email
+  @findOrCreate: (user_profile, callback) ->
 
     $this = @
     $user = null
 
+    # Todo this on your own.
     async.waterfall([
       (finished) ->
-        new User({id: user_data.id}).fetch().then (model) ->
+        new User({id: user_profile.id}).fetch().then (model) ->
           $user = model.serialize()
           finished()
 
