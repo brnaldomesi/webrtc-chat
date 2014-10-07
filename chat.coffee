@@ -3,7 +3,7 @@ morgan = require('morgan')
 swig = require('swig');
 cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
-session = require('express-session')
+session = require('cookie-session')
 PeerServer = require('peer').PeerServer
 models = require('./models')
 auth = require('./auth')
@@ -31,9 +31,12 @@ class Chat
     swig.setDefaults({ cache: false })
 
   setupAuthMiddleware: () ->
+    expiry_date = new Date()
+    expiry_date.setDate(expiry_date.getDate() + 10)
+
     @app.use(cookieParser())
     @app.use(bodyParser())
-    @app.use(session({ secret: process.env.COOKIE_SECRET }))
+    @app.use(session({ name: 'chat', secret: process.env.COOKIE_SECRET, expires: expiry_date  }))
     @app.use(auth.passport.initialize())
     @app.use(auth.passport.session())
 
