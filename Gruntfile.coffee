@@ -5,7 +5,7 @@ module.exports = (grunt) ->
 
     watch:
       coffee:
-        files: ["client.coffee"]
+        files: ["chat_client.coffee"]
         tasks: 'coffee'
 
     coffee:
@@ -15,7 +15,7 @@ module.exports = (grunt) ->
           sourceMap: true
 
         files:
-          "public/js/client.js": ['client.coffee']
+          "public/js/app.js": ['chat_client.coffee']
   });
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'

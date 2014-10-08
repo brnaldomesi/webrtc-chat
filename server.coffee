@@ -1,2 +1,2 @@
-chat = require('./chat')
-chat.startServer()
+chat_server = require('./chat_server')
+chat_server.startServer()

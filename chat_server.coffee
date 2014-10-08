@@ -8,7 +8,7 @@ PeerServer = require('peer').PeerServer
 models = require('./models')
 auth = require('./auth')
 
-class Chat
+class ChatServer
   constructor: () ->
     @app = express()
 
@@ -48,19 +48,22 @@ class Chat
   setupRoutes: () ->
     # Authentication based views
     @app.get '/auth/facebook', auth.passport.authenticate('facebook', {scope: ['email']})
-    @app.get '/auth/facebook/callback', auth.passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/failure' })
+    @app.get '/auth/facebook/callback', auth.passport.authenticate('facebook', { successRedirect: '/dashboard', failureRedirect: '/failure' })
     # The default route
     @app.get '/', (request, response) ->
       response.render('index')
 
-    @app.get '/success', (request, response) ->
-      response.render("success")
+    @app.get '/dashboard', (request, response) ->
+      response.render("dashboard")
 
     @app.get '/failure', (request, response) ->
       response.send('Failure.')
 
     @app.post '/me', (request, response) ->
-      response.send 'Do nothing'
+      if request.user?
+        response.send({peer: request.user})
+      else
+        response.send({peer: null})
 
   startServer: () ->
     $this = @
@@ -76,4 +79,4 @@ class Chat
   stopServer: () ->
     # do nothing for the moment
 
-module.exports= new Chat()
+module.exports= new ChatServer()

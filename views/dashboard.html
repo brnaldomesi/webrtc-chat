@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block css %}
+<link href="/public/css/chat.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div id="chat-view">
+</div>
+
+<script type="text/x-swig-template" id="chat-app-template">
+<div class="row">
+    <div class="col-md-3">
+        <video class="self" muted="true" autoplay></video>
+    </div>
+    <div class="col-md-9">
+        <video class="stream" autoplay></video>
+    </div>
+</div>
+</script>
+{% endblock %}

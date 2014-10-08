@@ -1,1 +1,25 @@
 {% extends 'layout.html' %}
+
+{% block css %}
+<link href="/public/css/grayscale.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block intro %}
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1 class="brand-heading">Chat</h1>
+                    <p class="intro-text">A free, fast, peer to peer chat.</p>
+                    <a href="/auth/facebook" class="btn btn-success btn-lg">
+                        Try Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
