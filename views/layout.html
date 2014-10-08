@@ -11,7 +11,8 @@
         <title>Chat</title>
 
         <link href="/public/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/public/css/grayscale.css" rel="stylesheet">
+        {% block css %}
+        {% endblock %}
 
         <link href="/public/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
@@ -36,13 +37,8 @@
                     version    : 'v2.1'
                 });
 
-                FB.getLoginStatus(function(response) {
-                    if (response.status === 'connected') {
-                        Chat.FetchFacebookProfileData()
-                    } else {
-                        Chat.FacebookLogin()
-                    }
-                });
+                // Initialize new chat client
+                new ChatClientApp();
             };
 
             (function(d, s, id){
@@ -56,8 +52,8 @@
 
 
         <!-- Navigation -->
-        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-            <div class="container">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
                         <i class="fa fa-bars"></i>
@@ -81,28 +77,20 @@
             <!-- /.container -->
         </nav>
 
-        <header class="intro">
-            <div class="intro-body">
-                {% block content %}
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <h1 class="brand-heading">Chat</h1>
-                            <p class="intro-text">A free, fast, peer to peer chat.</p>
-                            <a href="#about" class="btn btn-success btn-lg">
-                                Try Now
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endblock %}
-            </div>
-        </header>
+        {% block intro %}
+        {% endblock %}
+
+        <div class="content container-fluid">
+        {% block content %}
+        {% endblock %}
+        </div>
 
         <script src="/public/js/jquery-1.11.0.js"></script>
         <script src="/public/js/bootstrap.min.js"></script>
         <script src="/public/js/jquery.easing.min.js"></script>
         <script src="/public/js/peer.min.js"></script>
-        <script src="/public/js/client.js"></script>
+        <script src="/public/js/underscore-min.js"></script>
+        <script src="/public/js/backbone-min.js"></script>
+        <script src="/public/js/app.js"></script>
     </body>
 </html>
