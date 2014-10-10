@@ -78,18 +78,31 @@ PeerModel = (function(_super) {
   };
 
   PeerModel.prototype.checkFacebookLoginStatus = function() {
-    var $peer;
-    $peer = this;
+    var $this;
+    $this = this;
     return FB.getLoginStatus(function(response) {
       if (response.status === "connected") {
+        $this.getPeerId();
         return FB.api('/me/picture', {
           height: 200,
           width: 200,
           type: 'square'
         }, function(response) {
-          return $peer.set('dp', response.data.url);
+          return $this.set('dp', response.data.url);
         });
       }
+    });
+  };
+
+  PeerModel.prototype.getPeerId = function() {
+    this.peer = new Peer({
+      host: 'localhost',
+      port: 3000,
+      path: '/peer',
+      debug: 3
+    });
+    return this.peer.on('open', function(id) {
+      return console.log("peer id is" + id);
     });
   };
 

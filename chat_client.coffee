@@ -43,9 +43,14 @@ class PeerModel extends Backbone.Model
     @checkFacebookLoginStatus()
 
   checkFacebookLoginStatus: () ->
-    $peer = @
+    $this = @
     FB.getLoginStatus (response) ->
       if response.status == "connected"
-
+        $this.getPeerId()
         FB.api '/me/picture',{height: 200, width: 200, type: 'square'}, (response) ->
-          $peer.set 'dp', response.data.url
+          $this.set 'dp', response.data.url
+
+  getPeerId: () ->
+    @peer = new Peer({host: 'localhost', port: 3000, path: '/peer', debug: 3})
+    @peer.on 'open', (id) ->
+      console.log("peer id is" + id)
