@@ -7,8 +7,8 @@ ChatClientApp = (function() {
     var $client;
     $client = this;
     $.post('/me', function(data) {
-      if (data.peer != null) {
-        $client.peer = new PeerModel(data.peer);
+      if (data.user != null) {
+        $client.peer = new PeerModel(data.user);
         $client.view = new ChatClientView({
           model: $client.peer
         });
@@ -74,27 +74,35 @@ PeerModel = (function(_super) {
   };
 
   PeerModel.prototype.fetchFacebookData = function() {
-    return this.checkFacebookLoginStatus();
-  };
-
-  PeerModel.prototype.checkFacebookLoginStatus = function() {
     var $this;
     $this = this;
     return FB.getLoginStatus(function(response) {
       if (response.status === "connected") {
-        $this.getPeerId();
-        return FB.api('/me/picture', {
-          height: 200,
-          width: 200,
-          type: 'square'
-        }, function(response) {
-          return $this.set('dp', response.data.url);
+        return $this.verifyPeer(response.authResponse, function() {
+          $this.getPeerId();
+          return $this.getDisplayPicture();
         });
       }
     });
   };
 
+  PeerModel.prototype.verifyPeer = function(authResponse, next) {
+    if (authResponse.accessToken != null) {
+      return $.post('/verify', {
+        accessToken: authResponse.accessToken
+      }, function(data) {
+        if (data.verified === true) {
+          return next();
+        } else {
+          return console.log("Couldn't verify your authenticity!!!");
+        }
+      });
+    }
+  };
+
   PeerModel.prototype.getPeerId = function() {
+    var $this;
+    $this = this;
     this.peer = new Peer({
       host: 'localhost',
       port: 3000,
@@ -102,7 +110,19 @@ PeerModel = (function(_super) {
       debug: 3
     });
     return this.peer.on('open', function(id) {
-      return console.log("peer id is" + id);
+      return $this.set('peer_id', id);
+    });
+  };
+
+  PeerModel.prototype.getDisplayPicture = function() {
+    var $this;
+    $this = this;
+    return FB.api('/me/picture', {
+      height: 200,
+      width: 200,
+      type: 'square'
+    }, function(response) {
+      return $this.set('dp', response.data.url);
     });
   };
 
