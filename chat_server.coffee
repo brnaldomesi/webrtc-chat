@@ -5,7 +5,6 @@ cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 session = require('cookie-session')
 PeerServer = require('peer').PeerServer
-models = require('./models')
 auth = require('./auth')
 
 class ChatServer
