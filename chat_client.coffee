@@ -56,7 +56,7 @@ class PeerModel extends Backbone.Model
 
   getPeerId: () ->
     $this = @
-    @peer = new Peer({host: 'localhost', port: 3000, path: '/peer', debug: 3})
+    @peer = new Peer({host: window.PEER_SERVER_HOST, port: window.PEER_SERVER_PORT, path: '/peer', debug: 3})
     @peer.on 'open', (id) ->
       $this.set 'peer_id', id
 

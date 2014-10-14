@@ -45,6 +45,9 @@ class ChatServer
     @app.use (req, res, next) ->
       $app.locals.user = req.user
       $app.locals.facebook_public_app_id = process.env.FACEBOOK_PUBLIC_APP_ID
+      $app.locals.peer_server_port = process.env.PEER_SERVER_PORT
+      $app.locals.peer_server_host = process.env.PEER_SERVER_HOST
+
       next()
 
   setupRoutes: () ->
