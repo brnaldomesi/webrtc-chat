@@ -44,6 +44,7 @@ class ChatServer
     $app = @app
     @app.use (req, res, next) ->
       $app.locals.user = req.user
+      $app.locals.facebook_public_app_id = process.env.FACEBOOK_PUBLIC_APP_ID
       next()
 
   setupRoutes: () ->
