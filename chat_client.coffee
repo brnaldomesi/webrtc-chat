@@ -3,8 +3,8 @@ class ChatClientApp
     $client = @
 
     $.post '/me', (data) ->
-      if data.peer?
-        $client.peer = new PeerModel(data.peer)
+      if data.user?
+        $client.peer = new PeerModel(data.user)
         $client.view = new ChatClientView({model: $client.peer})
 
         # fetch facebook data
@@ -39,17 +39,28 @@ class PeerModel extends Backbone.Model
     console.log("testing2")
 
   fetchFacebookData: () ->
-    @checkFacebookLoginStatus()
-
-  checkFacebookLoginStatus: () ->
     $this = @
     FB.getLoginStatus (response) ->
       if response.status == "connected"
-        $this.getPeerId()
-        FB.api '/me/picture',{height: 200, width: 200, type: 'square'}, (response) ->
-          $this.set 'dp', response.data.url
+        $this.verifyPeer response.authResponse, () ->
+          $this.getPeerId()
+          $this.getDisplayPicture()
+
+  verifyPeer: (authResponse, next) ->
+    if authResponse.accessToken?
+      $.post '/verify', {accessToken: authResponse.accessToken}, (data) ->
+        if data.verified == true
+          next()
+        else
+          console.log "Couldn't verify your authenticity!!!"
 
   getPeerId: () ->
+    $this = @
     @peer = new Peer({host: 'localhost', port: 3000, path: '/peer', debug: 3})
     @peer.on 'open', (id) ->
-      console.log("peer id is" + id)
+      $this.set 'peer_id', id
+
+  getDisplayPicture: () ->
+    $this = @
+    FB.api '/me/picture',{height: 200, width: 200, type: 'square'}, (response) ->
+      $this.set 'dp', response.data.url
