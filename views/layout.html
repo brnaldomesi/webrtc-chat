@@ -29,6 +29,9 @@
 
     <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
         <script>
+            window.PEER_SERVER_PORT = "{{ peer_server_port }}";
+            window.PEER_SERVER_HOST = "{{ peer_server_host }}";
+
             window.fbAsyncInit = function() {
                 FB.init({
                     appId      : '{{ facebook_public_app_id }}',

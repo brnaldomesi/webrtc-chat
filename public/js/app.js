@@ -104,8 +104,8 @@ PeerModel = (function(_super) {
     var $this;
     $this = this;
     this.peer = new Peer({
-      host: 'localhost',
-      port: 3000,
+      host: window.PEER_SERVER_HOST,
+      port: window.PEER_SERVER_PORT,
       path: '/peer',
       debug: 3
     });
