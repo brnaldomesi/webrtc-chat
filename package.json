@@ -15,10 +15,9 @@
     "cookie-parser": "1.3.3",
     "body-parser": "1.9.0",
     "cookie-session": "1.0.2",
-    "bookshelf": "tgriesser/bookshelf",
-    "knex": "tgriesser/knex",
     "peer": "surenm/peerjs-server",
-    "async": "0.9.0"
+    "redis": "0.12.1",
+    "fb": "Thuzi/facebook-node-sdk"
   },
   "devDependencies": {
     "foreman": "x",
