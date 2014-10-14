@@ -5,7 +5,9 @@ cookieParser = require('cookie-parser')
 bodyParser = require('body-parser')
 session = require('cookie-session')
 PeerServer = require('peer').PeerServer
+FB = require('fb')
 auth = require('./auth')
+
 
 class ChatServer
   constructor: () ->
@@ -68,11 +70,21 @@ class ChatServer
       response.send('Failure.')
 
     @loggedinRouter.post '/me', (request, response) ->
-      response.send({peer: request.user})
+      response.send({user: request.user})
 
     @loggedinRouter.get '/logout', (request, response) ->
       request.logout()
       response.redirect('/')
+
+    @loggedinRouter.post '/verify', (request, response) ->
+      accessToken =  request.body.accessToken
+      if accessToken?
+        FB.setAccessToken(accessToken)
+        FB.api "me", (fb_response) ->
+          if request.user.id == fb_response.id
+            response.send({verified: true})
+          else
+            response.send({verified: false})
 
     @app.use(@loggedinRouter)
 
