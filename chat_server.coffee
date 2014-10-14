@@ -48,21 +48,34 @@ class ChatServer
     # Authentication based views
     @app.get '/auth/facebook', auth.passport.authenticate('facebook', {scope: ['email']})
     @app.get '/auth/facebook/callback', auth.passport.authenticate('facebook', { successRedirect: '/dashboard', failureRedirect: '/failure' })
+
     # The default route
     @app.get '/', (request, response) ->
       response.render('index')
 
-    @app.get '/dashboard', (request, response) ->
-      response.render("dashboard")
+    # Logged in router to check for all logged in routes
+    @loggedinRouter = express.Router()
+    @loggedinRouter.use (req, res, next) ->
+      if req.user?
+        next()
+      else
+        res.redirect('/')
 
-    @app.get '/failure', (request, response) ->
+    @loggedinRouter.get '/dashboard', (request, response) ->
+      response.render('dashboard')
+
+    @loggedinRouter.get '/failure', (request, response) ->
       response.send('Failure.')
 
-    @app.post '/me', (request, response) ->
-      if request.user?
-        response.send({peer: request.user})
-      else
-        response.send({peer: null})
+    @loggedinRouter.post '/me', (request, response) ->
+      response.send({peer: request.user})
+
+    @loggedinRouter.get '/logout', (request, response) ->
+      request.logout()
+      response.redirect('/')
+
+    @app.use(@loggedinRouter)
+
 
   startServer: () ->
     $this = @
