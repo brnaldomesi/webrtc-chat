@@ -91,7 +91,8 @@ class ChatServer
 
   startServer: () ->
     $this = @
-    @server = @app.listen 3000, () ->
+    port = process.env.PORT
+    @server = @app.listen port, () ->
       console.log "Listening on port %d", $this.server.address().port
 
     @peer_server = PeerServer({server: @server, path: '/peer'})
