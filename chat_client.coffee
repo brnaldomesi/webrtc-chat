@@ -1,4 +1,3 @@
-#= require "./models"
 class ChatClientApp
   constructor: () ->
     $client = @

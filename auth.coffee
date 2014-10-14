@@ -1,4 +1,3 @@
-models = require('./models')
 passport = require('passport')
 FacebookStrategy = require('passport-facebook').Strategy
 
@@ -21,11 +20,17 @@ class Auth
 
     @passport.use(facebook_strategy)
 
-  @OnSuccessfulOauthCallback: (accessToken, refreshToken, profile, done) ->
-    models.User.findOrCreate(profile, (user) ->
-      done(null, user)
-    )
+  @serializableFacebookProfile: (profile) ->
+    return {
+      id: profile._json.id
+      name: profile._json.name,
+      email: profile._json.email
+    }
+    return profile
 
+  @OnSuccessfulOauthCallback: (accessToken, refreshToken, profile, done) ->
+    serializedUserProfile = Auth.serializableFacebookProfile(profile)
+    done(null, serializedUserProfile)
 
 
 module.exports = new Auth()
