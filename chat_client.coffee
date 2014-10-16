@@ -17,7 +17,8 @@ class ChatClientView extends Backbone.View
 
   initialize: () ->
     $view = @
-    @model.on 'change', () ->
+    @model.on 'change:peer_id', () ->
+      console.log $view.model.get('peer_id')
       $view.render()
 
   render: () ->
@@ -34,9 +35,9 @@ class ChatClientView extends Backbone.View
     , (error) -> 
       console.log(error)
 
+
 class PeerModel extends Backbone.Model
   initialize: () ->
-    console.log("testing2")
 
   fetchFacebookData: () ->
     $this = @
@@ -56,7 +57,7 @@ class PeerModel extends Backbone.Model
 
   getPeerId: () ->
     $this = @
-    @peer = new Peer({host: window.PEER_SERVER_HOST, port: window.PEER_SERVER_PORT, path: '/peer', debug: 3})
+    @peer = new Peer({host: window.PEER_SERVER_HOST, port: window.PEER_SERVER_PORT, path: '/peer', debug: 3, token: @get('id')})
     @peer.on 'open', (id) ->
       $this.set 'peer_id', id
 
@@ -64,3 +65,35 @@ class PeerModel extends Backbone.Model
     $this = @
     FB.api '/me/picture',{height: 200, width: 200, type: 'square'}, (response) ->
       $this.set 'dp', response.data.url
+
+    FB.api 'me/friends?fields=name,id,picture', (response) ->
+      friends = []
+      for friend in response.data
+        friends.push({
+          id: friend.id,
+          name: friend.name,
+          picture: friend.picture.data.url
+          })
+
+      options =
+        valueNames: ['id', 'name', 'picture']
+        item: '<li><b class="name"></b> - <i class="id"></i></li>'
+
+
+      friends_list = new List('users', options, friends)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

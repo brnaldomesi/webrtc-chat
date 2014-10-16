@@ -28,6 +28,7 @@
     </head>
 
     <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+        {% if enable_chat_client %}
         <script>
             window.PEER_SERVER_PORT = "{{ peer_server_port }}";
             window.PEER_SERVER_HOST = "{{ peer_server_host }}";
@@ -52,6 +53,7 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>
+        {% endif %}
 
 
         <!-- Navigation -->
@@ -94,6 +96,7 @@
         <script src="/public/js/peer.min.js"></script>
         <script src="/public/js/underscore-min.js"></script>
         <script src="/public/js/backbone-min.js"></script>
+        <script src="/public/js/list.min.js"></script>
         <script src="/public/js/app.js"></script>
     </body>
 </html>
