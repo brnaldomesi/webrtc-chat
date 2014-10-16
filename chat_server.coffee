@@ -68,7 +68,7 @@ class ChatServer
         res.redirect('/')
 
     @loggedinRouter.get '/dashboard', (request, response) ->
-      response.render('dashboard')
+      response.render('dashboard', {enable_chat_client: true})
 
     @loggedinRouter.get '/failure', (request, response) ->
       response.send('Failure.')

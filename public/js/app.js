@@ -35,7 +35,8 @@ ChatClientView = (function(_super) {
   ChatClientView.prototype.initialize = function() {
     var $view;
     $view = this;
-    return this.model.on('change', function() {
+    return this.model.on('change:peer_id', function() {
+      console.log($view.model.get('peer_id'));
       return $view.render();
     });
   };
@@ -69,9 +70,7 @@ PeerModel = (function(_super) {
     return PeerModel.__super__.constructor.apply(this, arguments);
   }
 
-  PeerModel.prototype.initialize = function() {
-    return console.log("testing2");
-  };
+  PeerModel.prototype.initialize = function() {};
 
   PeerModel.prototype.fetchFacebookData = function() {
     var $this;
@@ -107,7 +106,8 @@ PeerModel = (function(_super) {
       host: window.PEER_SERVER_HOST,
       port: window.PEER_SERVER_PORT,
       path: '/peer',
-      debug: 3
+      debug: 3,
+      token: this.get('id')
     });
     return this.peer.on('open', function(id) {
       return $this.set('peer_id', id);
@@ -117,12 +117,30 @@ PeerModel = (function(_super) {
   PeerModel.prototype.getDisplayPicture = function() {
     var $this;
     $this = this;
-    return FB.api('/me/picture', {
+    FB.api('/me/picture', {
       height: 200,
       width: 200,
       type: 'square'
     }, function(response) {
       return $this.set('dp', response.data.url);
+    });
+    return FB.api('me/friends?fields=name,id,picture', function(response) {
+      var friend, friends, friends_list, options, _i, _len, _ref;
+      friends = [];
+      _ref = response.data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        friend = _ref[_i];
+        friends.push({
+          id: friend.id,
+          name: friend.name,
+          picture: friend.picture.data.url
+        });
+      }
+      options = {
+        valueNames: ['id', 'name', 'picture'],
+        item: '<li><b class="name"></b> - <i class="id"></i></li>'
+      };
+      return friends_list = new List('users', options, friends);
     });
   };
 
